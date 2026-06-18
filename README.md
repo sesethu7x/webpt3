@@ -200,6 +200,18 @@ Edit `netlify.toml`, `.htaccess`, or `security-headers.conf` to allow additional
 This project is proprietary to Artisan Bakery. All rights reserved.
 
 ## Support
+<img width="800" height="1284" alt="_C__Users_Student_Desktop_personal%20profile_index2 html (5)" src="https://github.com/user-attachments/assets/f1c2f826-2f16-4391-9706-2adbfccc13af" />
+<img width="800" height="1284" alt="_C__Users_Student_Desktop_personal%20profile_index2 html (4)" src="https://github.com/user-attachments/assets/a85af2d3-0a5f-4196-a3c5-5ea6d92b4ca7" />
+<img width="800" height="1284" alt="_C__Users_Student_Desktop_personal%20profile_index2 html (3)" src="https://github.com/user-attachments/assets/094ca355-0022-431b-94ae-c4fcc33d2771" />
+<img width="800" height="1284" alt="_C__Users_Student_Desktop_personal%20profile_index2 html (2)" src="https://github.com/user-attachments/assets/850e05c0-f28f-4528-9470-69f2516dc150" />
+<img width="800" height="1284" alt="_C__Users_Student_Desktop_personal%20profile_index2 html (1)" src="https://github.com/user-attachments/assets/681fe9a5-04e6-48fb-8f99-b2f5c082f875" />
+<img width="800" height="1284" alt="_C__Users_Student_Desktop_personal%20profile_index2 html" src="https://github.com/user-attachments/assets/8a37512b-19e6-412f-924a-f1c50666bd15" />
+<img width="1891" height="900" alt="Screenshot 2026-06-18 142126" src="https://github.com/user-attachments/assets/2ed3d6b7-1b84-4281-8223-169c2b216d83" />
+<img width="1851" height="847" alt="Screenshot 2026-06-18 142235" src="https://github.com/user-attachments/assets/bbe0cd37-6938-408c-97a0-a262a2612636" />
+<img width="1827" height="890" alt="Screenshot 2026-06-18 143505" src="https://github.com/user-attachments/assets/5920b054-c47c-4fa9-a47d-e85cf39f34b6" />
+<img width="1553" height="705" alt="Screenshot 2026-06-18 143528" src="https://github.com/user-attachments/assets/18aa8be5-3ff0-4cd3-bc17-d2658172b1b8" />
+<img width="1652" height="697" alt="Screenshot 2026-06-18 143559" src="https://github.com/user-attachments/assets/10b91488-fe23-4121-b681-908b07981e5a" />
+
 
 For issues or questions, contact hello@artisanbakery.com or open a GitHub issue.
 
