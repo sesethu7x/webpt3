@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Artisan Bakery in Polokwane — handcrafted pastries, sourdough, cakes, and daily fresh breads. Order online for pickup or delivery. Baked daily using premium ingredients and traditional techniques.">
+    <title>Artisan Bakery — Handcrafted Pastries & Sourdough in Polokwane</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #8B4513;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #D2691E;
+        }
+
+        .cta-header {
+            background: linear-gradient(135deg, #D2691E, #8B4513);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-header:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.ctfassets.net/rric2f17v78a/34zHlAZZTz5BcHOjjGEQaC/114c8885cdd79f19ca1c5e000e0bde93/Bakery-Website.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-hero {
+            display: inline-block;
+            background: #D2691E;
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-hero:hover {
+            background: #B8860B;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(210, 105, 30, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #8B4513;
+        }
+
+        /* About Section */
+        .about {
+            background: #e1deda;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #151212;
+        }
+
+        .about-image {
+            
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Menu Section */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .menu-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .menu-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Category tag shown next to product title */
+        .menu-item .meta{display:flex;align-items:center;gap:0.5rem}
+        .category-tag{display:inline-block;background:#D2691E;color:#fff;padding:4px 8px;border-radius:999px;font-size:0.75rem;font-weight:600}
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #D2691E;
+            margin: 1rem 0;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #D2691E, #8B4513);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            color: white;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .cta-btn {
+            background: white;
+            color: #D2691E;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: #2C1810;
+            color: white;
+            text-align: center;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #D2691E;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #D2691E;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Map styles */
+        #mapid{height:400px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.08);margin-top:1.2rem;opacity:0;transform:translateY(8px);transition:opacity .6s ease, transform .6s ease}
+        #mapid.map-visible{opacity:1;transform:none}
+
+        /* Marker animations (applies to leaflet marker icons) */
+        .leaflet-marker-icon.drop{animation:marker-drop .6s cubic-bezier(.2,.8,.2,1)}
+        .leaflet-marker-icon.bounce{animation:marker-bounce .9s cubic-bezier(.2,.8,.2,1)}
+        @keyframes marker-drop{0%{transform:translateY(-120px) scale(.9);opacity:0}60%{transform:translateY(12px) scale(1.02);opacity:1}100%{transform:none}}
+        @keyframes marker-bounce{0%{transform:translateY(0)}30%{transform:translateY(-18px)}50%{transform:translateY(0)}65%{transform:translateY(-8px)}100%{transform:none}}
+
+        /* Popup subtle fade */
+        .leaflet-popup-content-wrapper{transition:transform .18s ease, opacity .18s ease}
+        .leaflet-popup-tip{transition:opacity .18s ease}
+
+        /* Global smooth UI transitions */
+        a,button{transition:color .18s ease, transform .12s ease}
+        button, .cta-btn, .cta-header{transition:transform .18s ease, box-shadow .18s ease}
+        header{transition:padding .18s ease, box-shadow .18s ease, background .18s ease}
+        header.scrolled{padding:0.6rem 0;box-shadow:0 6px 24px rgba(0,0,0,0.12)}
+
+        /* Section reveal */
+        .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;will-change:opacity,transform}
+        .reveal.enter{opacity:1;transform:none}
+
+        /* Cards */
+        .menu-item{transition:transform .28s cubic-bezier(.2,.9,.2,1),box-shadow .28s ease}
+        .menu-item:hover{transform:translateY(-10px);box-shadow:0 20px 40px rgba(2,6,23,0.12)}
+
+        /* Images subtle zoom on hover */
+        .menu-item img,.about-image img{transition:transform .6s ease,filter .4s ease}
+        .menu-item:hover img,.about-image:hover img{transform:scale(1.03);filter:brightness(.98)}
+
+        /* Product filter UI */
+        .filter-section{background:#f5f3f0;padding:2rem;margin-bottom:2rem;border-radius:12px}
+        .filter-controls{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;justify-content:center;flex-direction:row}
+        .search-box{flex:1;min-width:200px;padding:0.75rem 1rem;border:1px solid #d9d9d9;border-radius:8px;font-size:1rem;transition:border .18s ease}
+        .search-box:focus{outline:none;border-color:#D2691E;box-shadow:0 0 0 2px rgba(210,105,30,0.1)}
+        .category-tabs{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center}
+        .category-btn{padding:0.6rem 1.2rem;border:2px solid #ddd;background:#fff;border-radius:24px;cursor:pointer;font-size:0.95rem;transition:all .18s ease}
+        .category-btn:hover,.category-btn.active{background:#D2691E;color:#fff;border-color:#D2691E}
+        .price-range{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+        .price-range input{width:80px;padding:0.6rem;border:1px solid #ddd;border-radius:6px;font-size:0.95rem}
+        .price-range span{font-weight:600;color:#333}
+        .no-results{text-align:center;color:#999;font-size:1.1rem;padding:2rem}
+
+        /* Lightbox styles */
+        .lightbox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.75);z-index:10000;opacity:0;pointer-events:none;transition:opacity .18s ease}
+        .lightbox[aria-hidden="false"]{opacity:1;pointer-events:auto}
+        .lb-content{max-width:92%;max-height:86%;display:flex;flex-direction:column;align-items:center}
+        .lb-content img{max-width:100%;max-height:80vh;border-radius:8px;box-shadow:0 20px 40px rgba(0,0,0,0.6)}
+        .lb-caption{color:#fff;margin-top:12px;text-align:center;font-size:0.95rem;max-width:90%}
+        .lb-close,.lb-prev,.lb-next{position:absolute;background:transparent;border:0;color:#fff;font-size:2rem;cursor:pointer;padding:8px}
+        .lb-close{top:18px;right:22px;font-size:2.2rem}
+        .lb-prev{left:18px;top:50%;transform:translateY(-50%);font-size:2.8rem}
+        .lb-next{right:18px;top:50%;transform:translateY(-50%);font-size:2.8rem}
+        .lb-close:focus,.lb-prev:focus,.lb-next:focus{outline:2px solid #fff;border-radius:6px}
+    </style>
+</head>
+<body>
+
+    <!-- Lightbox markup (hidden) -->
+    <div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-label="Image preview">
+        <button class="lb-close" aria-label="Close">×</button>
+        <button class="lb-prev" aria-label="Previous image">‹</button>
+        <div class="lb-content">
+            <img src="" alt="" id="lightbox-img">
+            <div class="lb-caption" id="lightbox-caption"></div>
+        </div>
+        <button class="lb-next" aria-label="Next image">›</button>
+    </div>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">Artisan Bakery</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#order" class="cta-header">Order Now</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Artisan Bakery</h1>
+            <p>Discover the art of baking with our handcrafted pastries, fresh breads, and decadent desserts made with love and the finest ingredients.</p>
+            <a href="#order" class="cta-hero">Order Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>Our Story</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>At Artisan Bakery, we believe baking is an art form. Every loaf, pastry, and cake is crafted with passion using time-honored techniques and the freshest ingredients.</p>
+                    <p>From our family recipe sourdough to our signature croissants, each creation tells a story of tradition and innovation.</p>
+
+                </div>
+                <div class="about-image">
+                    <img src="https://thfvnext.bing.com/th/id/OIP.10e3XnsOiB_phRxrfu7NmQHaE8?w=300&h=200&c=7&r=0&o=7&cb=thfvnextfalcon2&dpr=1.3&pid=1.7&rm=3" alt="Artisan Bakery kitchen — bakers preparing pastries and breads">
+                </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu">
+        <div class="container">
+            <h2>Featured Menu</h2>
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-controls">
+                    <input type="text" id="search-box" class="search-box" placeholder="Search by name or ingredient...">
+                    <div class="category-tabs" id="category-tabs">
+                        <button class="category-btn active" data-category="all">All</button>
+                    </div>
+                    <div class="price-range">
+                        <span>Price:</span>
+                        <input type="range" id="min-price" min="0" max="500" value="0" placeholder="Min">
+                        <span>-</span>
+                        <input type="range" id="max-price" min="0" max="500" value="500" placeholder="Max">
+                        <span id="price-display">R0 - R500</span>
+                    </div>
+                </div>
+            </div>
+            <div id="menu-grid" class="menu-grid"></div>
+            <div id="no-results" class="no-results" style="display:none;">No products found matching your criteria.</div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="order" class="cta-section">
+        <div class="container">
+            <h2>Ready to Indulge?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Order online for pickup or delivery. Freshness guaranteed!</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn"><i class="fas fa-phone"></i> Call to Order</a>
+                <a href="#map" id="find-location-btn" class="cta-btn"><i class="fas fa-map-marker-alt"></i> Find Location</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Map Section -->
+    <section id="map">
+        <div class="container">
+            <h2>Find Us</h2>
+            <p style="text-align:center; color: #555;">Allow location access to center the map on your position, or view our bakery below.</p>
+            <div id="mapid" aria-label="Map showing bakery location"></div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Artisan Bakery</h3>
+                    <p>53 Kerk Street,<br>Polokwane</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Hours</h3>
+                    <p>Mon-Fri: 7AM-4PM<br>Sat-Sun: 8AM-2PM</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Phone: (068)077 6984<br>Email: hello@artisanbakery.com</p>
+                </div>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.8;">&copy; 2024 Artisan Bakery. All rights reserved.</p>
+        </div>
+    </footer>
+     <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            // Bakery address and fallback coordinates
+            var bakeryAddress = '53 Kerk Street, Polokwane Central, South Africa';
+            var bakeryFallback = [-23.9045, 29.4689];
+            // create map (initial view uses fallback)
+            var map = L.map('mapid', {preferCanvas:true}).setView(bakeryFallback, 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add bakery marker after geocoding the address (client-side geocode via Nominatim)
+            var bakeryMarker = null;
+            function placeBakeryMarker(coords, displayAddress){
+                if(bakeryMarker) map.removeLayer(bakeryMarker);
+                bakeryMarker = L.marker(coords).addTo(map).bindPopup('<strong>Artisan Bakery</strong><br>' + (displayAddress||bakeryAddress));
+                // marker drop animation class
+                if(bakeryMarker && bakeryMarker._icon){
+                    bakeryMarker._icon.classList.add('drop');
+                    // remove drop class after animation completes to allow re-use
+                    bakeryMarker._icon.addEventListener('animationend', function(){ bakeryMarker._icon.classList.remove('drop'); }, {once:true});
+                }
+            }
+
+            // Try to geocode the address
+            fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(bakeryAddress))
+              .then(function(res){ return res.json(); })
+              .then(function(data){
+                  if(Array.isArray(data) && data.length){
+                      var lat = parseFloat(data[0].lat);
+                      var lon = parseFloat(data[0].lon);
+                      var coords = [lat, lon];
+                      placeBakeryMarker(coords, data[0].display_name);
+                      map.setView(coords, 16);
+                  } else {
+                      placeBakeryMarker(bakeryFallback);
+                      map.setView(bakeryFallback, 13);
+                  }
+              }).catch(function(){
+                  placeBakeryMarker(bakeryFallback);
+                  map.setView(bakeryFallback, 13);
+              }).finally(function(){
+                  // Fade map in after tiles/marker are ready
+                  setTimeout(function(){
+                      var el = document.getElementById('mapid');
+                      if(el) el.classList.add('map-visible');
+                  }, 160);
+              });
+
+            // Find user location when button clicked
+            var findBtn = document.getElementById('find-location-btn');
+            if(findBtn){
+                findBtn.addEventListener('click', function(e){
+                    e.preventDefault();
+                    var target = document.getElementById('map');
+                    if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+
+                    if(!navigator.geolocation){
+                        alert('Geolocation not supported by your browser.');
+                        return;
+                    }
+
+                    navigator.geolocation.getCurrentPosition(function(pos){
+                        var latlng = [pos.coords.latitude, pos.coords.longitude];
+                        var userMarker = L.marker(latlng).addTo(map).bindPopup('You are here');
+                        // add bounce effect
+                        if(userMarker && userMarker._icon) userMarker._icon.classList.add('bounce');
+                        // smooth fly to user
+                        map.flyTo(latlng, 15, {duration:1.2});
+                        userMarker.openPopup();
+                    }, function(err){
+                        alert('Unable to get your location — showing bakery location instead.');
+                        map.flyTo(bakeryFallback, 13, {duration:1});
+                    }, {enableHighAccuracy:true, timeout:10000});
+                });
+            }
+
+            // Smooth reveal on scroll using IntersectionObserver
+            (function(){
+                var io = new IntersectionObserver(function(entries){
+                    entries.forEach(function(entry){
+                        if(entry.isIntersecting){
+                            entry.target.classList.add('enter');
+                            // once visible, unobserve for performance
+                            io.unobserve(entry.target);
+                        }
+                    });
+                },{threshold:0.12});
+
+                // Elements to reveal
+                var toReveal = document.querySelectorAll('section, .menu-item, .about-image, .hero-content');
+                toReveal.forEach(function(el){ el.classList.add('reveal'); io.observe(el); });
+            })();
+
+            // Header shrink / shadow on scroll
+            (function(){
+                var hdr = document.querySelector('header');
+                if(!hdr) return;
+                var onScroll = function(){ hdr.classList.toggle('scrolled', window.scrollY > 20); };
+                window.addEventListener('scroll', onScroll, {passive:true});
+                onScroll();
+            })();
+        });
+    </script>
+
+    <!-- Real-time updates: BroadcastChannel + simulator -->
+    <style>
+        /* Live demo panel styles (visible by default) */
+        .live-panel{position:fixed;right:18px;bottom:18px;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.12);padding:10px 12px;z-index:9999;font-family:Poppins,Arial;font-size:13px;display:none!important;pointer-events:none;visibility:hidden}
+        .live-panel button{display:block;width:160px;margin:6px 0;padding:8px;border-radius:8px;border:1px solid #eee;background:#0066ff;color:#fff;cursor:pointer}
+        .live-panel .small{background:#444;margin-top:6px}
+        .live-toast{position:fixed;left:18px;bottom:18px;background:linear-gradient(90deg,#fff,#f8fafc);padding:12px 16px;border-radius:8px;box-shadow:0 10px 30px rgba(2,6,23,0.12);z-index:9999;opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .28s ease}
+        .live-toast.show{opacity:1;transform:none}
+    </style>
+
+    <div class="live-panel" id="live-panel" aria-hidden="true" style="display:none">
+        <strong style="display:block;margin-bottom:6px;color:#111">Live demo</strong>
+        <button id="sim-add">Simulate add menu item</button>
+        <button id="sim-update">Simulate update price</button>
+        <button id="sim-remove">Simulate remove item</button>
+        <button id="sim-ann">Simulate announcement</button>
+        <button id="enable-bc" class="small">Enable BroadcastChannel test</button>
+    </div>
+
+    <div id="live-toast" class="live-toast" role="status" aria-live="polite"></div>
+
+    <script>
+        (function(){
+            // Real-time update handler (applyUpdate supports several types)
+            function applyUpdate(update){
+                if(!update || !update.type) return;
+                if(update.type === 'add-menu-item') addMenuItem(update.payload);
+                if(update.type === 'update-price') updatePrice(update.payload);
+                if(update.type === 'remove-menu-item') removeMenuItem(update.payload);
+                if(update.type === 'announcement') showToast(update.payload && update.payload.text);
+            }
+
+            function addMenuItem(payload){
+                payload = payload || {};
+                // Normalize price to a numeric value (strip currency symbols)
+                var raw = payload.price || payload.price === 0 ? payload.price : 0;
+                var numericPrice = parseFloat(String(raw).replace(/[^0-9.-]+/g, '')) || 0;
+
+                // Create product object and add to PRODUCTS so filters work correctly
+                var nextId = PRODUCTS.length ? Math.max.apply(null, PRODUCTS.map(function(p){ return p.id; })) + 1 : 1;
+                var prod = {
+                    id: nextId,
+                    name: payload.title || payload.name || 'New Item',
+                    img: payload.img || 'https://via.placeholder.com/400x240',
+                    price: numericPrice,
+                    category: (payload.category||'uncategorized').toString().trim().toLowerCase(),
+                    desc: payload.desc || ''
+                };
+                // add to the start of the products array and re-apply filters
+                PRODUCTS.unshift(prod);
+                applyFilters();
+            }
+
+            function updatePrice(payload){
+                if(!payload || !payload.title) return;
+                // Normalize incoming price
+                var numericPrice = parseFloat(String(payload.price).replace(/[^0-9.-]+/g, '')) || 0;
+                // Update PRODUCTS array so filters reflect the change
+                for(var i=0;i<PRODUCTS.length;i++){
+                    if(PRODUCTS[i].name === payload.title){
+                        PRODUCTS[i].price = numericPrice;
+                        break;
+                    }
+                }
+                // Re-render filtered view
+                applyFilters();
+                // Also animate any matching DOM element for visual feedback
+                var items = document.querySelectorAll('.menu-item');
+                items.forEach(function(it){
+                    var h = it.querySelector('h3');
+                    if(h && h.textContent.trim() === payload.title){
+                        var p = it.querySelector('.price');
+                        if(p){ p.textContent = 'R' + numericPrice; p.style.transition='transform .18s ease'; p.style.transform='scale(1.04)';
+                            setTimeout(function(){ p.style.transform=''; },220);
+                        }
+                    }
+                });
+            }
+
+            function removeMenuItem(payload){
+                if(!payload || !payload.title) return;
+                var items = document.querySelectorAll('.menu-item');
+                items.forEach(function(it){
+                    var h = it.querySelector('h3');
+                    if(h && h.textContent.trim() === payload.title){
+                        it.style.transition='opacity .4s ease,transform .4s ease';
+                        it.style.opacity='0'; it.style.transform='translateY(12px)';
+                        setTimeout(function(){ it.remove(); },420);
+                    }
+                });
+            }
+
+            function showToast(text){
+                if(!text) return;
+                var t = document.getElementById('live-toast');
+                t.textContent = text; t.classList.add('show');
+                setTimeout(function(){ t.classList.remove('show'); }, 4000);
+            }
+
+            // BroadcastChannel for cross-tab real-time updates (no server needed)
+            var bc = null;
+            if('BroadcastChannel' in window){
+                bc = new BroadcastChannel('live-updates');
+                bc.onmessage = function(e){ try{ applyUpdate(e.data); }catch(err){} };
+            }
+
+            // Wire the dev panel to send messages via BroadcastChannel (or simulate locally)
+            function sendUpdate(msg){
+                if(bc) bc.postMessage(msg);
+                // apply locally as well
+                applyUpdate(msg);
+            }
+
+            document.getElementById('sim-add').addEventListener('click', function(){
+                var sample = {type:'add-menu-item', payload:{title:'Seasonal Tart', price:'R28', desc:'Limited batch — order while stocks last', img:'https://via.placeholder.com/400x240?text=Tart'}};
+                sendUpdate(sample);
+                showToast('Simulated: added "'+sample.payload.title+'"');
+            });
+
+            document.getElementById('sim-update').addEventListener('click', function(){
+                var sample = {type:'update-price', payload:{title:'Butter Croissant', price:'R38'}};
+                sendUpdate(sample);
+                showToast('Simulated: updated price for '+sample.payload.title);
+            });
+
+            document.getElementById('sim-remove').addEventListener('click', function(){
+                var sample = {type:'remove-menu-item', payload:{title:'Chocolate Cake'}};
+                sendUpdate(sample);
+                showToast('Simulated: removed '+sample.payload.title);
+            });
+
+            document.getElementById('sim-ann').addEventListener('click', function(){
+                var sample = {type:'announcement', payload:{text:'Today only: free coffee with any pastry!'}};
+                sendUpdate(sample);
+            });
+
+            document.getElementById('enable-bc').addEventListener('click', function(){
+                if(bc) { showToast('BroadcastChannel already enabled'); return; }
+                if('BroadcastChannel' in window){ bc = new BroadcastChannel('live-updates'); bc.onmessage = function(e){ applyUpdate(e.data); }; showToast('BroadcastChannel enabled'); }
+                else showToast('BroadcastChannel not supported in this browser');
+            });
+
+            // If desired, also accept external websocket / SSE messages by exposing applyUpdate globally
+            window.__applyLiveUpdate = applyUpdate;
+
+        })();
+    </script>
+
+    <script>
+        // Lightbox functionality: click any .menu-item img or .about-image img
+        (function(){
+            var lb = document.getElementById('lightbox');
+            var lbImg = document.getElementById('lightbox-img');
+            var lbCaption = document.getElementById('lightbox-caption');
+            var closeBtn = document.querySelector('.lb-close');
+            var prevBtn = document.querySelector('.lb-prev');
+            var nextBtn = document.querySelector('.lb-next');
+
+            // collect gallery images (live NodeList will be refreshed each open)
+            function getGallery(){
+                var sel = document.querySelectorAll('.menu-item img, .about-image img');
+                return Array.prototype.slice.call(sel);
+            }
+
+            var currentIndex = -1;
+
+            function openLightbox(index){
+                var imgs = getGallery();
+                if(!imgs.length || index < 0 || index >= imgs.length) return;
+                var node = imgs[index];
+                lbImg.src = node.src;
+                lbImg.alt = node.alt || '';
+                // caption prefers nearby h3 or alt
+                var title = '';
+                var parent = node.closest('.menu-item');
+                if(parent){
+                    var h = parent.querySelector('h3'); if(h) title = h.textContent.trim();
+                }
+                if(!title) title = node.alt || '';
+                lbCaption.textContent = title;
+                currentIndex = index;
+                lb.setAttribute('aria-hidden','false');
+                document.documentElement.style.overflow = 'hidden';
+                // focus close button for accessibility
+                closeBtn.focus();
+            }
+
+            function closeLightbox(){
+                lb.setAttribute('aria-hidden','true');
+                lbImg.src = '';
+                currentIndex = -1;
+                document.documentElement.style.overflow = '';
+            }
+
+            function showPrev(){ var imgs = getGallery(); if(imgs.length){ currentIndex = (currentIndex -1 + imgs.length) % imgs.length; openLightbox(currentIndex); }}
+            function showNext(){ var imgs = getGallery(); if(imgs.length){ currentIndex = (currentIndex +1) % imgs.length; openLightbox(currentIndex); }}
+
+            // delegate click
+            document.addEventListener('click', function(e){
+                var img = e.target.closest('.menu-item img, .about-image img');
+                if(img){
+                    e.preventDefault();
+                    var imgs = getGallery();
+                    var idx = imgs.indexOf(img);
+                    if(idx === -1) return;
+                    openLightbox(idx);
+                }
+            });
+
+            // controls
+            closeBtn.addEventListener('click', closeLightbox);
+            prevBtn.addEventListener('click', function(e){ e.stopPropagation(); showPrev(); });
+            nextBtn.addEventListener('click', function(e){ e.stopPropagation(); showNext(); });
+
+            // close on backdrop click
+            lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
+
+            // keyboard navigation
+            document.addEventListener('keydown', function(e){
+                if(!lb || lb.getAttribute('aria-hidden') === 'true') return;
+                if(e.key === 'Escape') closeLightbox();
+                if(e.key === 'ArrowLeft') showPrev();
+                if(e.key === 'ArrowRight') showNext();
+            });
+
+        })();
+    </script>
+
+    <script>
+        // Product data (fixed)
+        const PRODUCTS = [
+            {id:1, name:'Butter Croissant', img:'https://th.bing.com/th/id/OIP.xxH32rNOXn6yMDoz_R6_bQHaE7?w=258&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3', price:35, category:'pastries', desc:'Flaky, golden layers of perfection made with premium French butter.'},
+            {id:2, name:'Chocolate Croissant', img:'https://thfvnext.bing.com/th/id/OIP.wU31bQiWV5OUAZtueW7UnAHaLH?w=204&h=306&c=7&r=0&o=7&cb=thfvnextfalcon2&dpr=1.3&pid=1.7&rm=3', price:38, category:'pastries', desc:'Rich chocolate-filled croissant with delicate, buttery layers.'},
+            {id:3, name:'Sourdough Loaf', img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC8zHa6iBT_aqhc8o5zyTaWCWQNIwGqZwM9KgBPtPYNVkqR7RK0P2NmfZfRVpDaBRmt_3YC-Zo7lxN4hu_4jaUlwmdAkQ-sGiQenAl0JY&s=10', price:45, category:'breads', desc:'Our signature 48-hour fermented sourdough with perfect crust.'},
+            {id:4, name:'Whole Wheat Bread', img:'https://thfvnext.bing.com/th/id/OIP.h32CAegb40DN63aCG67fAQHaLH?w=208&h=305&c=7&r=0&o=7&cb=thfvnextfalcon2&dpr=1.3&pid=1.7&rm=3', price:32, category:'breads', desc:'Nutty whole wheat with flax seeds and natural sweetness.'},
+            {id:5, name:'Chocolate Cake', img:'https://tse2.mm.bing.net/th/id/OIP._ARNaVaeqhwNWAef-WhnygHaE7?pid=ImgDet&w=187&h=124&c=7&dpr=1,3&o=7&rm=3', price:180, category:'cakes', desc:'Rich, moist chocolate cake with ganache frosting.'},
+            {id:6, name:'Vanilla Cheesecake', img:'https://thfvnext.bing.com/th/id/OIP.nGWSe8FnRFsf-B1uYPwdZwHaLH?w=208&h=305&c=7&r=0&o=7&cb=thfvnextfalcon2&dpr=1.3&pid=1.7&rm=3', price:150, category:'cakes', desc:'Creamy New York style cheesecake with vanilla bean.'},
+            {id:7, name:'Almond Croissant', img:'https://thfvnext.bing.com/th/id/OIP.as-SyrFm7GAS6kjQlmMGHwHaHa?w=208&h=208&c=7&r=0&o=7&cb=thfvnextfalcon2&dpr=1.3&pid=1.7&rm=3', price:42, category:'pastries', desc:'Crispy croissant topped with almond cream and sliced almonds.'},
+            {id:8, name:'Ciabatta Loaf', img:'https://thfvnext.bing.com/th/id/OIP.2g0_wbVexJ2KECCNcrVOhwHaLH?w=123&h=184&c=7&r=0&o=7&cb=thfvnextfalcon2&dpr=1.3&pid=1.7&rm=3', price:28, category:'breads', desc:'Italian-style flatbread with olive oil and sea salt.'},
+            {id:9, name:'Red Velvet Cake', img:'https://thfvnext.bing.com/th/id/OIP.uNQZfoh-kjfvsQ_Pn7Ba2QHaJQ?w=208&h=260&c=7&r=0&o=7&cb=thfvnextfalcon2&dpr=1.3&pid=1.7&rm=3', price:200, category:'cakes', desc:'Classic red velvet with cream cheese frosting.'}
+        ];
+
+        // Filter state
+        let filteredProducts = [...PRODUCTS];
+        let filterState = {search:'', category:'all', minPrice:0, maxPrice:500};
+
+        // Helper to show friendly labels for known categories
+        function prettyLabel(cat){
+            if(!cat) return 'Uncategorized';
+            cat = cat.toString().trim().toLowerCase();
+            if(cat === 'breads') return 'Bread';
+            if(cat === 'pastries') return 'Pastries';
+            if(cat === 'cakes') return 'Cake';
+            return cat.charAt(0).toUpperCase() + cat.slice(1);
+        }
+
+        // Initialize UI
+        function initFilters(){
+            console.log('Initializing filters with ' + PRODUCTS.length + ' products');
+            
+            // Populate category tabs from product categories
+            const categories = ['all', ...new Set(PRODUCTS.map(p => (p.category||'').toString().trim().toLowerCase()))];
+            const categoryTabs = document.getElementById('category-tabs');
+            if(!categoryTabs) {
+                console.error('category-tabs element not found!');
+                return;
+            }
+            
+            categoryTabs.innerHTML = '';
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn' + (cat === 'all' ? ' active' : '');
+                var display = cat === 'all' ? 'All' : prettyLabel(cat);
+                btn.textContent = display;
+                btn.dataset.category = cat;
+                btn.addEventListener('click', () => filterByCategory(cat));
+                categoryTabs.appendChild(btn);
+            });
+
+            // Search input listener
+            const searchBox = document.getElementById('search-box');
+            if(searchBox) {
+                searchBox.addEventListener('input', (e) => {
+                    filterState.search = e.target.value.toLowerCase();
+                    applyFilters();
+                });
+            }
+
+            // Price range listeners
+            const minPrice = document.getElementById('min-price');
+            const maxPrice = document.getElementById('max-price');
+            if(minPrice) minPrice.addEventListener('input', (e) => {
+                filterState.minPrice = parseInt(e.target.value);
+                updatePriceDisplay();
+                applyFilters();
+            });
+            if(maxPrice) maxPrice.addEventListener('input', (e) => {
+                filterState.maxPrice = parseInt(e.target.value);
+                updatePriceDisplay();
+                applyFilters();
+            });
+
+            // Initial render
+            applyFilters();
+        }
+
+        function filterByCategory(cat){
+            console.log('filterByCategory called with:', cat);
+            // use raw lowercase category key
+            var norm = (cat||'').toString().trim().toLowerCase();
+            filterState.category = norm || 'all';
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            var btn = document.querySelector('[data-category="' + norm + '"]');
+            if(btn) btn.classList.add('active'); else console.warn('Category button not found for', cat, 'normalized:', norm);
+            applyFilters();
+        }
+
+        function updatePriceDisplay(){
+            const min = filterState.minPrice;
+            const max = filterState.maxPrice;
+            document.getElementById('price-display').textContent = 'R' + min + ' - R' + max;
+        }
+
+        function applyFilters(){
+            console.log('Applying filters', JSON.stringify(filterState));
+                filteredProducts = PRODUCTS.filter(p => {
+                const name = (p.name||'').toString().toLowerCase();
+                const desc = (p.desc||'').toString().toLowerCase();
+                const cat = (p.category||'').toString().trim().toLowerCase();
+                const matchSearch = filterState.search === '' || name.includes(filterState.search) || desc.includes(filterState.search);
+                const matchCategory = filterState.category === 'all' || cat === filterState.category;
+                const matchPrice = Number(p.price) >= filterState.minPrice && Number(p.price) <= filterState.maxPrice;
+                return matchSearch && matchCategory && matchPrice;
+            });
+            console.log('Filtered products:', filteredProducts.map(function(p){ return p.name + ' (' + p.category + '):' + p.price; }));
+            renderProducts();
+        }
+
+        function renderProducts(){
+            const grid = document.getElementById('menu-grid');
+            const noResults = document.getElementById('no-results');
+            
+            if(!grid) {
+                console.error('menu-grid not found');
+                return;
+            }
+            
+            if(filteredProducts.length === 0){
+                grid.innerHTML = '';
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+                const placeholder = 'https://via.placeholder.com/600x400?text=No+Image';
+                grid.innerHTML = filteredProducts.map(p => `
+                    <div class="menu-item reveal" data-category="${(p.category||'').toString().toLowerCase()}">
+                        <img src="${p.img || placeholder}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='${placeholder}';">
+                        <div class="meta">
+                            <h3>${p.name}</h3>
+                            <span class="category-tag" data-category="${(p.category||'').toString().toLowerCase()}">${prettyLabel(p.category)}</span>
+                        </div>
+                        <div class="price">R${p.price}</div>
+                        <p>${p.desc}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Clicking a category tag should filter by that category (delegated)
+        document.addEventListener('click', function(e){
+            var tag = e.target.closest('.category-tag');
+            if(tag && tag.dataset && tag.dataset.category){
+                filterByCategory(tag.dataset.category);
+            }
+        });
+
+        // Initialize immediately (script is at end of body)
+        try {
+            console.log('Script block executing, DOM ready');
+            initFilters();
+            console.log('initFilters completed successfully');
+        } catch(err) {
+            console.error('Error in product filter initialization:', err);
+        }
+    </script>
+
+</body>
+</html>
